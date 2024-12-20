@@ -1,0 +1,595 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(
+    0deg,
+    rgba(224, 123, 63, 1) 0%,
+    rgba(228, 176, 146, 1) 0%,
+    rgba(255, 244, 237, 1) 0%,
+    rgba(119, 165, 222, 1) 100%
+  );
+  font-family: "Fira Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+main {
+  padding: 20px;
+  text-align: center;
+  height: 70%;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  height: 102.5px;
+}
+
+a, p, button, h1 {
+  font-family: "Fira Sans", sans-serif;
+}
+
+button,
+#sign-up-btn {
+  padding: 10px 20px;
+
+  background-color: #008cba;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+button:not(.login-chooser button, .signup-chooser button, .logout):hover,
+#sign-up-btn:hover {
+  background-color: #e99b26;
+}
+
+footer {
+  color: #153c43;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  margin-top: auto;
+}
+
+input:not(#images),
+.img-input-container {
+  border: none;
+  background-color: rgb(225, 223, 223);
+  height: 35px;
+  border-radius: 35px;
+}
+
+p {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.img-input-container {
+  display: flex;
+  padding-left: 10px;
+  align-items: center;
+}
+
+#images {
+  width: 200px;
+}
+
+li {
+  list-style: none;
+}
+
+h2 {
+  font-size: 30px;
+  margin-top: 24.9px;
+  margin-bottom: 24.9px;
+}
+
+nav h1 {
+  margin-left: 50px;
+}
+
+nav ul li {
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+}
+
+nav ul {
+  overflow: hidden;
+  position: static;
+  top: 0;
+  padding-right: 0;
+  padding-left: 50px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+header nav a {
+  text-decoration: none;
+  color: white;
+  margin: 0 10px;
+  padding: 0px;
+  margin-top: 20px;
+}
+
+.title {
+  margin-top: 15px;
+}
+
+.logout {
+  font-family: "Fire Sans", sans-serif;
+  font-size: 13px;
+  color: white;
+  margin: 0 10px;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+
+footer a {
+  text-decoration: none;
+  color: #153c43;
+}
+
+#uname,
+#psw,
+#unameSign,
+#pswSign {
+  width: 40%;
+  padding: 8px;
+  margin-top: 2px;
+}
+
+#psw {
+  margin-bottom: 15px;
+}
+
+#from,
+#to,
+#departure_date,
+#flight_id,
+#departure_time,
+#arrival_time,
+#quantity {
+  text-align: center;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15%;
+  padding-right: 15%;
+  justify-content: left;
+  align-items: center;
+}
+
+.section-flight,
+.contact-section {
+  display: flex;
+  justify-content: center;
+}
+
+.flight-container,
+.contact-container,
+.post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 440px;
+  width: 440px;
+  background-color: white;
+  color: black;
+  border-radius: 3%;
+}
+
+.post-container {
+  margin-bottom: 182.5px;
+  height: 850px;
+}
+
+.places-section {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+#search-flights-form,
+#post-flights-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.searchFlights {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.searchFlights div {
+  width: 280px;
+  height: 330px;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+}
+
+.searchFlights img {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
+}
+
+.searchFlights p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.login-window,
+.signup-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-window form,
+.signup-window form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 220px;
+  width: 600px;
+  gap: 10px;
+}
+
+.intro a {
+  padding: 10px 20px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100px;
+  border-radius: 5px;
+}
+
+.flight-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flight-detail-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 600px;
+}
+
+.flight-detail-card img {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+}
+
+.login,
+.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form,
+.signup-form {
+  margin-bottom: 68px;
+}
+
+.login-form,
+.signup-form {
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 400px;
+}
+
+.error-login {
+  background-color: rgb(239, 142, 142);
+}
+
+.error-msg {
+  color: red;
+}
+
+.success-msg {
+  color: green;
+}
+
+.login-chooser,
+.signup-chooser {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.login-chooser button,
+.signup-chooser button {
+  text-decoration: none;
+  width: 100px;
+  border-radius: 0px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unclick-login-chooser {
+  background-color: #76bed6;
+}
+
+.login-chooser :first-child,
+.signup-chooser :first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-right-width: 0px;
+}
+
+.login-chooser :last-child,
+.signup-chooser :last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-left-width: 0px;
+}
+
+.click-login-chooser {
+  background-color: #e99b26;
+}
+
+.login-container,
+.signup-container {
+  padding-top: 50px;
+  height: 365px;
+}
+
+#sign-up-btn {
+  font-size: 13.3333px;
+  text-decoration: none;
+}
+
+#signup-btn {
+  margin-top: 40px;
+}
+
+#login-btn,
+#signup-btn {
+  margin-bottom: 25px;
+}
+
+body main h1 {
+  font-size: 40px;
+  margin-top: 26.8px;
+  margin-bottom: 26.8px;
+}
+
+.home main {
+  padding-bottom: 300px;
+}
+
+.home main h1 {
+  font-size: 60px;
+  padding-top: 100px;
+  margin-top: 29.1px;
+  margin-bottom: 29.1px;
+  font-weight: 700;
+}
+
+.home main a {
+  border-radius: 0;
+  background-color: white;
+  color: #008cba;
+  width: 150px;
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.fa-bars {
+  font-size: 40px;
+}
+
+.hamburger {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: column nowrap;
+  margin-right: 10px;
+}
+
+.burger {
+  width: 2rem;
+  height: 0.25rem;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.nav {
+  display: none;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.history-container {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  width: 60%;
+}
+
+.minimum-history-container {
+  height: 600px;
+}
+
+.searchFlights div {
+  margin-bottom: 10px;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+  height: 200px;
+  width: 100px;
+
+  padding-top: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.open {
+  background-color: rgb(146, 149, 228);
+}
+
+.nav-open ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+}
+
+nav ul li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+  font-size: 13px;
+}
+
+.searchFlights {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 400px) {
+  .flight-detail-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+  }
+
+  .flight-detail-card img {
+    width: 350px;
+    height: 350px;
+  }
+
+  .flights-list div {
+    margin-bottom: 30px;
+  }
+  .login-form,
+  .signup-form {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 400px;
+  }
+
+  #uname,
+  #psw,
+  #unameSign,
+  #pswSign {
+    width: 60%;
+  }
+}
+
+@media (min-width: 800px) {
+  .searchFlights {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+  .flight-detail-card {
+    width: 600px;
+  }
+  .flight-detail-card img {
+    width: 450px;
+    height: 450px;
+  }
+  .flight-detail-card p {
+    font-size: 20px;
+  }
+  nav ul li {
+    margin: 20px;
+    font-size: 17px;
+  }
+  .hamburger {
+    display: none;
+  }
+  .nav {
+    display: contents;
+  }
+
+  .login-form,
+  .signup-form {
+    margin-left: 300px;
+    margin-right: 300px;
+    width: 600px;
+  }
+  #uname,
+  #psw,
+  #unameSign,
+  #pswSign {
+    width: 60%;
+  }
+  .logout {
+    font-size: 17px;
+  }
+  .menu {
+    position: relative;
+
+    background: none;
+    height: auto;
+    width: auto;
+  }
+  .nav-open ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: end;
+  }
+}
