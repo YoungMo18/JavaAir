@@ -10,7 +10,7 @@ export function LoginPage() {
         <Navigation />
       </header>
       <main>
-        <div class="login">
+        <div className="login">
           <h1>Login</h1>
           <LoginForm />
         </div>

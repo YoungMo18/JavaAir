@@ -1,38 +1,39 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-let models = {}
+let models = {};
 
-console.log("connecting to mongodb")
+console.log("Connecting to MongoDB...");
 
-await mongoose.connect('mongodb+srv://info441_user:info441_user@cluster0.pajam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+await mongoose.connect(
+  "mongodb+srv://info441_user:info441_user@cluster0.pajam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+  { useNewUrlParser: true, useUnifiedTopology: true }
+);
 
-console.log("successfully connected to mongodb!")
+console.log("Successfully connected to MongoDB!");
 
-const postSchema = new mongoose.Schema({
-    username: String,
-    url: String,
-    description: String,
-    created_date: Date,
-    likes: [String]
-})
-
-const commentSchema = new mongoose.Schema({
-    username: String,
-    comment: String,
-    post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-    created_date: Date
-})
-
-const userInfoSchema = new mongoose.Schema({
-    username: String,
-    email: String,
-    personalWebsite: String
+// User Schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  userType: { type: String, required: true },
 });
 
-models.Post = mongoose.model('Post', postSchema)
-models.Comment = mongoose.model('Comment', commentSchema)
-models.UserInfo = mongoose.model('UserInfo', userInfoSchema)
+models.User = mongoose.model("User", userSchema);
 
-console.log("mongoose models created")
+// Flight Schema
+const flightSchema = new mongoose.Schema({
+  flightID: { type: String, required: true, unique: true },
+  from: { type: String, required: true },
+  to: { type: String, required: true },
+  departureTime: { type: String, required: true },
+  arrivalTime: { type: String, required: true },
+  departureDate: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  images: { type: [String], required: true },
+});
 
-export default models
+models.Flight = mongoose.model("Flight", flightSchema);
+
+console.log("Mongoose models created!");
+
+export default models;

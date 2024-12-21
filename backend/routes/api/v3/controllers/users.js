@@ -1,68 +1,89 @@
 import express from 'express';
 const router = express.Router();
+import { hashPassword, verifyPassword } from '../utils/passwordUtils.js';
 
+// Route to fetch user session information
 router.get('/myIdentity', (req, res) => {
     if (req.session.isAuthenticated) {
         res.json({
             status: "loggedin",
             userInfo: {
-                name: req.session.account.name,
-                username: req.session.account.username
-            }
+                username: req.session.user.username, // Updated to use `req.session.user`
+                userType: req.session.user.userType, // Updated to use `req.session.user`
+            },
         });
     } else {
         res.json({ status: "loggedout" });
     }
 });
 
-router.get('/info', async (req, res) => {
+// Signup route
+router.post('/signup', async (req, res) => {
+    const { username, password, userType } = req.body;
+
+    if (!username || !password || !userType) {
+        return res.status(400).json({ status: 'error', message: 'Missing fields' });
+    }
+
     try {
-        const { user } = req.query;
-        if (!user) {
-            return res.status(400).json({ status: "error", error: "Missing username" });
-        }
-        const userInfo = await req.models.UserInfo.findOne({ username: user });
-        if (!userInfo) {
-            return res.json({
-                username: user,
-                email: user,
-                personalWebsite: "",
-            });
-        }
-        console.log(userInfo)
-        res.json(userInfo);
+        const hashedPassword = await hashPassword(password);
+        const newUser = new req.models.User({
+            username,
+            password: hashedPassword,
+            userType,
+        });
+        await newUser.save();
+        res.status(201).json({ status: 'success', message: 'User created' });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: "error", error: error.message });
+        console.error("Error during signup:", error);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 });
 
-router.post('/info', async (req, res) => {
-    try {
-        if (!req.session.isAuthenticated) {
-            return res.status(401).json({ status: "error", error: "Not logged in" });
-        }
-        const { personalWebsite } = req.body;
-        if (!personalWebsite) {
-            return res.status(400).json({ status: "error", error: "Missing personalWebsite" });
-        }
-        const username = req.session.account.username;
-        let userInfo = await req.models.UserInfo.findOne({ username });
-        if (!userInfo) {
-            userInfo = new req.models.UserInfo({
-                username,
-                email: req.session.account.email,
-                personalWebsite,
-            });
-        } else {
-            userInfo.personalWebsite = personalWebsite;
-        }
-        await userInfo.save();
-        res.json({ status: "success" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: "error", error: error.message });
+// Login route
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ status: 'error', message: 'Missing fields' });
     }
+
+    try {
+        const user = await req.models.User.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        }
+
+        const passwordMatch = await verifyPassword(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        }
+
+        // Set session details
+        req.session.isAuthenticated = true;
+        req.session.user = {
+            id: user._id,
+            username: user.username,
+            userType: user.userType
+        };
+
+        res.status(200).json({ status: 'success', message: 'Login successful' });
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+});
+
+// Logout route
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error during logout:", err);
+            return res.status(500).json({ status: "error", error: "Logout failed" });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ status: "success", message: "Logged out successfully" });
+    });
 });
 
 export default router;
