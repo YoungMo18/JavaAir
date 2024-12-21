@@ -1,5 +1,4 @@
-const bcrypt = require('bcryptjs');
-
+import bcrypt from 'bcryptjs';
 // Hash a password
 export async function hashPassword(password) {
     const saltRounds = 10; // Number of salt rounds
