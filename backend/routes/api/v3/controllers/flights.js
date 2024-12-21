@@ -109,7 +109,12 @@ router.get("/:flightID", async (req, res) => {
 });
 
 router.post("/bookings", async (req, res) => {
-  const { flightID, from, to, departureTime, arrivalTime, departureDate } = req.body;
+  const { flightID, from, to, departureTime, arrivalTime, departureDate, username } = req.body;
+
+  // Validate required fields
+  if (!flightID || !from || !to || !departureTime || !arrivalTime || !departureDate || !username) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
   try {
     const flight = await req.models.Flight.findOne({ flightID });
@@ -129,6 +134,7 @@ router.post("/bookings", async (req, res) => {
       departureTime,
       arrivalTime,
       departureDate,
+      username, // Include username
     });
 
     await booking.save();

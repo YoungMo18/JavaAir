@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 function HistoryCard(props) {
-  let flight = props.historyObject;
+  const flight = props.historyObject;
   return (
-    <>
-      <li>
-        <article>
-          <p>Flight number: {flight.flightID}</p>
-          <p>From: {flight.from}</p>
-          <p>To: {flight.to}</p>
-          <p>Time: {flight.departureDate}</p>
-          <p>------------------------------------------</p>
-        </article>
-      </li>
-    </>
+    <li>
+      <article>
+        <p>Flight number: {flight.flightID}</p>
+        <p>From: {flight.from}</p>
+        <p>To: {flight.to}</p>
+        <p>Date: {flight.departureDate}</p>
+        <p>------------------------------------------</p>
+      </article>
+    </li>
   );
 }
 
@@ -28,8 +26,9 @@ function HistoryList(props) {
     }
   }, [props.historyData]);
 
-  let cardList = props.historyData.map((flight) => (
-    <HistoryCard key={flight.key} historyObject={flight} />
+  // Use MongoDB's unique _id as the key
+  const cardList = props.historyData.map((flight) => (
+    <HistoryCard key={flight._id} historyObject={flight} />
   ));
 
   return (

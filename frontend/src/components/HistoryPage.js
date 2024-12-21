@@ -2,38 +2,33 @@ import React, { useState, useEffect } from "react";
 import { Navigation } from "./navigation/Navigation";
 import { Footer } from "./footer/Footer";
 import HistoryList from "./card/HistoryList";
-import { getDatabase, ref, onValue } from "firebase/database";
 
 export function HistoryPage(props) {
   const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
-    const db = getDatabase();
-    const username = localStorage.getItem("username");
+    const fetchHistory = async () => {
+      const username = localStorage.getItem("username");
 
-    if (!username) {
-      console.log("No username found in localStorage");
-      return;
-    }
-
-    const historyRef = ref(db, `bookedFlight/${username}`);
-
-    const unregisterFunction = onValue(historyRef, (snapshot) => {
-      const userHistoryObject = snapshot.val();
-      if (userHistoryObject) {
-        const userHistoryKeys = Object.keys(userHistoryObject);
-        const userHistoryArray = userHistoryKeys.map((key) => {
-          const singleHistoryCopy = { ...userHistoryObject[key], key };
-          return singleHistoryCopy;
-        });
-        setHistoryData(userHistoryArray);
-      } else {
-        setHistoryData([]);
+      if (!username) {
+        console.log("No username found in localStorage");
+        return;
       }
-    });
-    return () => {
-      unregisterFunction();
+
+      try {
+        const response = await fetch(`/api/v3/history/bookedFlights`);
+        if (response.ok) {
+          const history = await response.json();
+          setHistoryData(history);
+        } else {
+          console.error("Failed to fetch booking history");
+        }
+      } catch (error) {
+        console.error("Error fetching booking history:", error);
+      }
     };
+
+    fetchHistory();
   }, []);
 
   return (

@@ -33,6 +33,18 @@ const flightSchema = new mongoose.Schema({
 
 models.Flight = mongoose.model("Flight", flightSchema);
 
+const bookingSchema = new mongoose.Schema({
+  flightID: { type: String, required: true },
+  from: { type: String, required: true },
+  to: { type: String, required: true },
+  departureTime: { type: String, required: true },
+  arrivalTime: { type: String, required: true },
+  departureDate: { type: String, required: true },
+  username: { type: String, required: true }, // Link booking to a user
+});
+
+models.Booking = mongoose.model("Booking", bookingSchema);
+
 console.log("Mongoose models created!");
 
 export default models;

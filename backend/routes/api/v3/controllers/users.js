@@ -45,34 +45,36 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return res.status(400).json({ status: 'error', message: 'Missing fields' });
+      return res.status(400).json({ status: 'error', message: 'Missing fields' });
     }
 
     try {
-        const user = await req.models.User.findOne({ username });
-        if (!user) {
-            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
-        }
+      const user = await req.models.User.findOne({ username });
+      if (!user) {
+        return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+      }
 
-        const passwordMatch = await verifyPassword(password, user.password);
-        if (!passwordMatch) {
-            return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
-        }
+      const passwordMatch = await verifyPassword(password, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+      }
 
-        // Set session details
-        req.session.isAuthenticated = true;
-        req.session.user = {
-            id: user._id,
-            username: user.username,
-            userType: user.userType
-        };
+      // Set session details
+      req.session.isAuthenticated = true;
+      req.session.user = {
+        id: user._id,
+        username: user.username,
+        userType: user.userType,
+      };
 
-        res.status(200).json({ status: 'success', message: 'Login successful' });
+      console.log("Session after login:", req.session); // Debugging
+
+      res.status(200).json({ status: 'success', message: 'Login successful' });
     } catch (error) {
-        console.error("Error during login:", error);
-        res.status(500).json({ status: 'error', message: 'Internal server error' });
+      console.error("Error during login:", error);
+      res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
-});
+  });
 
 // Logout route
 router.post('/logout', (req, res) => {
