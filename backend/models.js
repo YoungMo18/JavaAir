@@ -5,8 +5,7 @@ let models = {};
 console.log("Connecting to MongoDB...");
 
 await mongoose.connect(
-  "mongodb+srv://info441_user:info441_user@cluster0.pajam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  "mongodb+srv://info441_user:info441_user@cluster0.pajam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 );
 
 console.log("Successfully connected to MongoDB!");

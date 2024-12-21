@@ -35,6 +35,8 @@ import WebAppAuthProvider from 'msal-node-wrapper';
 //   }
 // };
 
+
+
 const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
 const __dirname = path.resolve();
@@ -71,6 +73,8 @@ app.use('/api/v3', apiv3Router);
 // app.use(authProvider.authenticate());
 
 app.use('/users', usersRouter);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Handle React routing, return index.html for any unknown routes
 app.get('*', (req, res) => {

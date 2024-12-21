@@ -1,77 +1,68 @@
-import express from "express";
-import multer from "multer";
-import path from "path";
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
 
-// Multer setup for image upload
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadDir = path.join(__dirname, '../../../../../uploads/');
+
+// Configure Multer Storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Directory to store uploaded files
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
   },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
 });
 
+// Configure Multer File Filter
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Unsupported file type'), false);
+  }
+};
+
+// Initialize Multer
 const upload = multer({
   storage,
-  fileFilter: (req, file, cb) => {
-    const allowedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
-    if (allowedFileTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error("Invalid file type. Only PNG, JPEG, and JPG are allowed."));
-    }
-  },
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
 });
 
-// POST route for uploading images
-router.post("/upload", upload.array("images", 10), (req, res) => {
+// Upload Flight Images Route
+router.post('/upload', upload.array('images', 10), (req, res) => {
   try {
-    const imageUrls = req.files.map((file) =>
-      path.join("/uploads", file.filename)
-    );
-    res.status(200).json({ imageUrls });
+    // Map the uploaded files to their URLs or paths
+    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+    res.status(200).json({ message: 'Images uploaded successfully', imageUrls });
   } catch (error) {
-    console.error("Image upload failed:", error);
-    res.status(500).json({ message: "Image upload failed" });
+    console.error('Error uploading images:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// POST route to create a flight
-router.post("/", async (req, res) => {
-  const {
-    flightID,
-    from,
-    to,
-    departureTime,
-    arrivalTime,
-    departureDate,
-    quantity,
-    images,
-  } = req.body;
-
-  if (
-    !flightID ||
-    !from ||
-    !to ||
-    !departureTime ||
-    !arrivalTime ||
-    !departureDate ||
-    !quantity ||
-    !images
-  ) {
-    return res.status(400).json({ message: "Missing fields in request body" });
-  }
+// Other routes for flight-related functionality
+router.post('/addFlight', async (req, res) => {
+  const { flightID, from, to, departureTime, arrivalTime, departureDate, quantity, images } = req.body;
 
   try {
-    // Check if flight already exists
+    // Check if the flight ID already exists
     const existingFlight = await req.models.Flight.findOne({ flightID });
     if (existingFlight) {
-      return res.status(400).json({ message: "Flight ID already exists" });
+      return res.status(400).json({ message: 'Flight ID already exists' });
     }
 
+    // Create a new flight entry
     const newFlight = new req.models.Flight({
       flightID,
       from,
@@ -80,14 +71,14 @@ router.post("/", async (req, res) => {
       arrivalTime,
       departureDate,
       quantity,
-      images,
+      images
     });
 
     await newFlight.save();
-    res.status(201).json({ message: "Flight created successfully" });
+    res.status(201).json({ message: 'Flight added successfully', flight: newFlight });
   } catch (error) {
-    console.error("Error creating flight:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error('Error adding flight:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
