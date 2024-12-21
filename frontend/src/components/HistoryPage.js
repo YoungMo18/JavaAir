@@ -8,12 +8,12 @@ export function HistoryPage(props) {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const username = localStorage.getItem("username");
+      // const username = localStorage.getItem("username");
 
-      if (!username) {
-        console.log("No username found in localStorage");
-        return;
-      }
+      // if (!username) {
+      //   console.log("No username found in localStorage");
+      //   return;
+      // }
 
       try {
         const response = await fetch(`/api/v3/history/bookedFlights`);

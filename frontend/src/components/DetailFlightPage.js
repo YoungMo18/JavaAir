@@ -39,13 +39,13 @@ export function DetailFlightPage(props) {
   // Book flight
   const bookFlight = async () => {
     try {
-      const username = localStorage.getItem("username");
-      console.log("Username from localStorage:", username); // Debugging line
+      // const username = localStorage.getItem("username");
+      // console.log("Username from localStorage:", username); // Debugging line
 
-      if (!username) {
-        setErrorMessage("You must be logged in to book a flight.");
-        return;
-      }
+      // if (!username) {
+      //   setErrorMessage("You must be logged in to book a flight.");
+      //   return;
+      // }
 
       if (flightObject.quantity <= 0) {
         setErrorMessage("This flight is fully booked.");
@@ -62,7 +62,7 @@ export function DetailFlightPage(props) {
           departureTime: flightObject.departureTime,
           arrivalTime: flightObject.arrivalTime,
           departureDate: flightObject.departureDate,
-          username, // Include username in the booking
+          // username, // Include username in the booking
         }),
       });
 

@@ -3,10 +3,11 @@ import express from "express";
 const router = express.Router();
 
 router.get("/bookedFlights", async (req, res) => {
-  const username = req.session?.user?.username;
-  if (!username) {
-    return res.status(401).json({ status: "error", message: "Unauthorized: Username is undefined" });
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ status: "error", message: "Unauthorized: Please log in to view your bookings" });
   }
+
+  const username = req.session.user.username;
 
   try {
     // Fetch bookings for the user

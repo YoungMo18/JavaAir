@@ -35,7 +35,7 @@ export function LoginForm() {
 
       if (response.ok) {
         const data = await response.json(); // Parse the response
-        localStorage.setItem("username", username); // Save the username to localStorage
+        // localStorage.setItem("username", username); // Save the username to localStorage
         console.log("Login successful:", data.message);
 
         setShowErrorLogin(false);

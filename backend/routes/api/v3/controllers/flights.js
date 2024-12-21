@@ -109,10 +109,17 @@ router.get("/:flightID", async (req, res) => {
 });
 
 router.post("/bookings", async (req, res) => {
-  const { flightID, from, to, departureTime, arrivalTime, departureDate, username } = req.body;
+  const { flightID, from, to, departureTime, arrivalTime, departureDate } = req.body;
+
+  // Check if the user is logged in
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ message: "Unauthorized: Please log in to book a flight" });
+  }
+
+  const username = req.session.user.username; // Get the username from the session
 
   // Validate required fields
-  if (!flightID || !from || !to || !departureTime || !arrivalTime || !departureDate || !username) {
+  if (!flightID || !from || !to || !departureTime || !arrivalTime || !departureDate) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
@@ -134,7 +141,7 @@ router.post("/bookings", async (req, res) => {
       departureTime,
       arrivalTime,
       departureDate,
-      username, // Include username
+      username, // Use the username from the session
     });
 
     await booking.save();
