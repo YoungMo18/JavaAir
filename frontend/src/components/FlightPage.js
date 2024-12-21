@@ -3,7 +3,6 @@ import { Navigation } from "./navigation/Navigation";
 import { Footer } from "./footer/Footer";
 import FlightList from "./card/FlightList";
 import { SearchFlightsForm } from "./form/SearchFlightForm";
-import { getDatabase, ref, onValue } from "firebase/database";
 
 export function FlightPage(props) {
   const [flights, setFlights] = useState([]);
@@ -12,29 +11,21 @@ export function FlightPage(props) {
   const [date, setDate] = useState("");
 
   useEffect(() => {
-    const db = getDatabase();
-    const flightRef = ref(db, "flight");
-
-    const unregisterFunction = onValue(flightRef, (snapshot) => {
-      const allFlightObject = snapshot.val();
-
-      if (allFlightObject) {
-        const allFlightKeys = Object.keys(allFlightObject);
-
-        const allFlightsArray = allFlightKeys.map((key) => {
-          const singleFlightCopy = { ...allFlightObject[key], key };
-          return singleFlightCopy;
-        });
-
-        setFlights(allFlightsArray);
-      } else {
-        setFlights([]);
+    const fetchFlights = async () => {
+      try {
+        const response = await fetch("/api/v3/flights");
+        if (response.ok) {
+          const data = await response.json();
+          setFlights(data);
+        } else {
+          console.error("Failed to fetch flights");
+        }
+      } catch (error) {
+        console.error("Error fetching flights:", error);
       }
-    });
-
-    return () => {
-      unregisterFunction();
     };
+
+    fetchFlights();
   }, []);
 
   const applyFilter = (from, to, date) => {

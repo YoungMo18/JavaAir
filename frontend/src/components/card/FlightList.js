@@ -5,10 +5,14 @@ function FlightCard(props) {
   const navigate = useNavigate();
   let flight = props.flightObject;
   const navToDetail = () => {
-    navigate(`/flight_detail/${flight.key}`);
+    navigate(`/flight_detail/${flight.flightID || flight._id}`);
   };
 
-  const firstImage = Array.isArray(flight.images) && flight.images.length > 0 ? flight.images[0] : '';
+  const baseUrl = "http://localhost:8080"; // Backend server URL
+  const firstImage = flight.images && flight.images.length > 0
+  ? `${baseUrl}${flight.images[0]}`
+  : '';
+  console.log("First Image URL:", firstImage);
 
   return (
     <div onClick={navToDetail}>
@@ -20,12 +24,11 @@ function FlightCard(props) {
   );
 }
 
-function FlightList(props) {
-  const flightData = props.flightData;
-
-  const cardList = flightData.length > 0 ? flightData.map(flightObject => (
-      <FlightCard key={flightObject.key} flightObject={flightObject} />
-    ))
+function FlightList({ flightData }) {
+  const cardList = flightData.length > 0
+    ? flightData.map(flightObject => (
+        <FlightCard key={flightObject.flightID || flightObject._id} flightObject={flightObject} />
+      ))
     : <p className="error-msg">No Flights Available</p>;
 
   return (
@@ -39,5 +42,4 @@ function FlightList(props) {
     </>
   );
 }
-
 export default FlightList;

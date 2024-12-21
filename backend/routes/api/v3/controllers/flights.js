@@ -9,7 +9,9 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// const uploadDir = path.join(__dirname, '../../../../../uploads/');
 const uploadDir = path.join(__dirname, '../../../../../uploads/');
+// const uploadDir = path.join(__dirname, '../../../uploads/'); // Adjusted to the correct relative path
 
 // Configure Multer Storage
 const storage = multer.diskStorage({
@@ -79,6 +81,62 @@ router.post('/addFlight', async (req, res) => {
   } catch (error) {
     console.error('Error adding flight:', error.message);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const flights = await req.models.Flight.find();
+    res.status(200).json(flights);
+  } catch (error) {
+    console.error("Error fetching flights:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/:flightID", async (req, res) => {
+  const { flightID } = req.params;
+  try {
+    const flight = await req.models.Flight.findOne({ flightID });
+    if (!flight) {
+      return res.status(404).json({ message: "Flight not found" });
+    }
+    res.status(200).json(flight);
+  } catch (error) {
+    console.error("Error fetching flight:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.post("/bookings", async (req, res) => {
+  const { flightID, from, to, departureTime, arrivalTime, departureDate } = req.body;
+
+  try {
+    const flight = await req.models.Flight.findOne({ flightID });
+    if (!flight || flight.quantity <= 0) {
+      return res.status(400).json({ message: "Flight not available" });
+    }
+
+    // Decrease flight quantity
+    flight.quantity -= 1;
+    await flight.save();
+
+    // Save booking
+    const booking = new req.models.Booking({
+      flightID,
+      from,
+      to,
+      departureTime,
+      arrivalTime,
+      departureDate,
+    });
+
+    await booking.save();
+
+    res.status(201).json({ message: "Flight booked successfully" });
+  } catch (error) {
+    console.error("Error booking flight:", error.message);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
