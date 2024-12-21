@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+const bcrypt = require('bcryptjs');
 
 // Hash a password
 export async function hashPassword(password) {
