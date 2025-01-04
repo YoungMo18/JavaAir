@@ -16,3 +16,10 @@ The JavaAir application caters to two distinct user groups: workers and clients.
 On JavaAir, workers have dedicated features allowing them to post and manage airline availability, as well as handle cancellations. Clients, on the other hand, can browse, filter, and book available flights using interactive search and booking functionalities. Furthermore, clients have access to their transaction history, enabling them to track past purchases and appointments. This comprehensive set of features ensures that both workers and clients can efficiently navigate the platform and manage their travel arrangements effectively. All the information viewed will be user-generated and stored inside of a database, excluding any use of outside-source API’s.
 
 Overall, JavaAir's user-centric approach addresses common challenges faced by minority groups, such as language barriers and outdated website designs on Indonesian booking platforms. Through its intuitive interface, multilingual support (future feature), and robust feature set, JavaAir aims to enhance accessibility and usability, offering a more inclusive and streamlined travel booking experience for all users, regardless of language or background.
+
+<h2>Documentation</h2>
+
+To run:
+1) open root directory in terminal
+2) npm install
+3) npm start
