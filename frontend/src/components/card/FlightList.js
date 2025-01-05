@@ -8,7 +8,10 @@ function FlightCard(props) {
     navigate(`/flight_detail/${flight.flightID || flight._id}`);
   };
 
-  const baseUrl = "http://localhost:8080"; // Backend server URL
+  const baseUrl = process.env.NODE_ENV === 'production'
+  ? '' // Use an empty string for relative URLs in production
+  : 'http://localhost:8080'; // Local development backend URL
+
   const firstImage = flight.images && flight.images.length > 0
   ? `${baseUrl}${flight.images[0]}`
   : '';
