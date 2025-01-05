@@ -1,5 +1,9 @@
 <h1>JavaAir</h1>
 
+<h2>Deployed Link</h2>
+
+https://javaair.onrender.com/book
+
 <h2>Video Demonstration</h2>
 <div>
     <a href="https://www.loom.com/share/f525b72ec42f4d679dcb34a20a66c7eb">
@@ -21,5 +25,5 @@ Overall, JavaAir's user-centric approach addresses common challenges faced by mi
 
 To run:
 1) open root directory in terminal
-2) npm install
+2) npm install && npm run build
 3) npm start
