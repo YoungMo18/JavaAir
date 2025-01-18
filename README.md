@@ -2,7 +2,8 @@
 
 <h2>Deployed Link</h2>
 
-https://javaair.onrender.com/book
+(Initial load may take ~1 minute due to Render deployment)
+https://javaair.onrender.com/
 
 <h2>Video Demonstration</h2>
 <div>
